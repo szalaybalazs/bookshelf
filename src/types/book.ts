@@ -1,10 +1,14 @@
-interface iBook {
+export interface iBook {
   id: string;
 
   cover?: string;
+  colour?: string;
   title: string;
-  author: string;
+  subtitle?: string;
+  description?: string;
+  authors: string[];
   pages?: number;
+  averageRating?: number;
 
   startedAt?: Date;
   finishedAt?: Date;
