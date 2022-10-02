@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
-import { queryBooks } from '../core';
+import { Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { queryBooks, navigation } from '../core';
 import { iBook } from '../types';
 
 interface iSearchProps {}
@@ -13,8 +13,6 @@ const Search: FC<iSearchProps> = () => {
   const _handleBooks = async (query: string) => {
     if (!query) return setBooks([]);
     const books = await queryBooks(query);
-
-    console.log(books);
 
     setBooks(books);
   };
@@ -29,12 +27,14 @@ const Search: FC<iSearchProps> = () => {
       <TextInput value={query} placeholder='Search...' onChangeText={_handleQuery} />
       <ScrollView>
         {books.map((book) => (
-          <View key={book.id} style={{ backgroundColor: book.colour }}>
-            <Image source={{ uri: book.cover }} style={{ width: 120, height: 120 }} />
-            <Text>
-              {book.title} ({book.authors?.join(', ')})
-            </Text>
-          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('Book', { book })}>
+            <View key={book.id} style={{ backgroundColor: book.colour }}>
+              <Image source={{ uri: book.cover }} style={{ width: 120, height: 120 }} />
+              <Text>
+                {book.title} ({book.authors?.join(', ')})
+              </Text>
+            </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </SafeAreaView>

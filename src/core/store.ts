@@ -8,35 +8,36 @@ export const queryBooks = async (query: string): Promise<iBook[]> => {
   if (_query in cache) return cache[_query];
 
   try {
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${_query}&key=AIzaSyANFYG54Z_8FaOJ-fSx0VRxNFOT35_ycf8`;
+    const fields =
+      'kind,items(id,kind,volumeInfo(title,subtitle,authors,imageLinks/thumbnail,description,pageCount,averageRating,language))';
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${_query}&key=AIzaSyANFYG54Z_8FaOJ-fSx0VRxNFOT35_ycf8&fields=${fields}`;
     const res = await fetch(url);
     const data = await res.json();
 
     const items = data.items;
 
-    const books: iBook[] = [];
+    const books = await Promise.all(
+      items.map(async (item: any): Promise<iBook> => {
+        const cover = item?.volumeInfo?.imageLinks?.thumbnail;
+        const colour = await getColor(cover);
+        const book: iBook = {
+          id: item.id,
+          title: item.volumeInfo.title,
+          subtitle: item.volumeInfo.subtitle,
+          description: item.volumeInfo.description,
+          authors: item.volumeInfo.authors,
 
-    for (const item of items) {
-      const cover = item?.volumeInfo?.imageLinks?.thumbnail?.replace(/&zoom=\d/, '');
-      const colour = await getColor(cover);
-      console.log(cover, colour);
-      const book: iBook = {
-        id: item.id,
-        title: item.volumeInfo.title,
-        subtitle: item.volumeInfo.subtitle,
-        description: item.volumeInfo.description,
-        authors: item.volumeInfo.authors,
+          pages: item.volumeInfo.pageCount,
 
-        pages: item.volumeInfo.pageCount,
+          averageRating: item.volumeInfo.averageRating,
 
-        averageRating: item.volumeInfo.averageRating,
+          colour,
+          cover: cover?.replace(/&zoom=\d/, ''),
+        };
 
-        colour,
-        cover,
-      };
-
-      books.push(book);
-    }
+        return book;
+      }),
+    );
 
     cache[_query] = books;
     return books;
