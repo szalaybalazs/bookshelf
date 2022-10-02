@@ -1,16 +1,24 @@
 import { FC, useMemo } from 'react';
 import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { shelfAtom } from '../recoil/atoms/shelf';
 import { iBook } from '../types';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 interface iShelfProps {}
 
 const Shelf: FC<iShelfProps> = () => {
+  const shelf = useRecoilValue(shelfAtom);
+
+  const books = useMemo(() => {
+    return [...new Array(50)].map((_, index) => {
+      return shelf.books[index];
+    });
+  }, [shelf.books]);
   return (
-    <SafeAreaView>
-      <Text>25</Text>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
         <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', paddingHorizontal: 4 }}>
-          {[{ id: '', title: 'Mesterségem a halál', colour: 'pink' }, ...new Array(50)].map((book: iBook | undefined, index) => (
+          {books.map((book: iBook | undefined, index) => (
             <Book index={index} key={`book-${index}`} book={book} />
           ))}
         </View>
@@ -112,6 +120,7 @@ const Book: FC<iBookProps> = ({ index, book }) => {
           }}
         >
           <Text
+            numberOfLines={2}
             adjustsFontSizeToFit
             style={{
               width: height,
@@ -121,6 +130,7 @@ const Book: FC<iBookProps> = ({ index, book }) => {
               color: 'white',
               textAlign: 'center',
               padding: 1,
+              paddingHorizontal: 8,
             }}
           >
             {book.title}

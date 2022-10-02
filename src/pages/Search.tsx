@@ -1,9 +1,22 @@
-import { FC, useRef, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { queryBooks, navigation } from '../core';
+import { FC, useCallback, useRef, useState } from 'react';
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { navigation, queryBooks, styled } from '../core';
 import { iBook } from '../types';
 
 interface iSearchProps {}
+
+const Wrapper = styled.View`
+  flex: 1;
+`;
+const SearchBar = styled.TextInput`
+  margin: 12px 16px;
+  padding: 8px 16px;
+  background-color: #ddd;
+  border-radius: 6px;
+`;
+const Safe = styled.SafeAreaView`
+  flex: 1;
+`;
 
 const Search: FC<iSearchProps> = () => {
   const [query, setQuery] = useState('');
@@ -22,23 +35,65 @@ const Search: FC<iSearchProps> = () => {
     clearTimeout(timeout.current);
     timeout.current = setTimeout(() => _handleBooks(val), 500);
   };
+
+  const _handleRender = useCallback(({ item }: { item: iBook }) => <Book book={item} />, []);
+
   return (
-    <SafeAreaView>
-      <TextInput value={query} placeholder='Search...' onChangeText={_handleQuery} />
-      <ScrollView>
-        {books.map((book) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Book', { book })}>
-            <View key={book.id} style={{ backgroundColor: book.colour }}>
-              <Image source={{ uri: book.cover }} style={{ width: 120, height: 120 }} />
-              <Text>
-                {book.title} ({book.authors?.join(', ')})
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+    <Wrapper>
+      <Safe>
+        <SearchBar value={query} placeholder='Search...' onChangeText={_handleQuery} />
+        <Wrapper>
+          <FlatList data={books} renderItem={_handleRender} />
+        </Wrapper>
+      </Safe>
+    </Wrapper>
   );
 };
+
+interface iBookProps {
+  book: iBook;
+}
+const Book: FC<iBookProps> = ({ book }) => {
+  const _handleOpen = useCallback(() => navigation.navigate('Book', { book }), [book]);
+  return (
+    <TouchableOpacity onPress={_handleOpen}>
+      <View style={[bookStyles.wrapper]}>
+        <View style={bookStyles.cover}>
+          <Image source={{ uri: book.cover }} style={{ width: 80, height: 100 }} resizeMode='contain' />
+        </View>
+        <View style={bookStyles.data}>
+          <Text style={bookStyles.title}>{book.title}</Text>
+          <Text style={bookStyles.author}>{book.authors}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const bookStyles = StyleSheet.create({
+  wrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    paddingBottom: 12,
+    marginBottom: 12,
+    borderBottomColor: '#ccc',
+  },
+  cover: {
+    padding: 12,
+  },
+  data: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  author: {
+    fontSize: 14,
+    fontWeight: '300',
+    marginTop: 4,
+  },
+});
 
 export default Search;

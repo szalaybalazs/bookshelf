@@ -1,1 +1,1 @@
-export { iBook } from "./book";
+export { iBook, iShelf } from './book';

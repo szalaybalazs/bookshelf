@@ -3,10 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FC, useEffect } from 'react';
 import { navigation } from './src/core';
+import { RecoilRoot } from 'recoil';
 
 import Book from './src/pages/Book';
 import Search from './src/pages/Search';
 import Shelf from './src/pages/Shelf';
+import { View } from 'react-native';
 const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -24,16 +26,22 @@ export default function App() {
     (navigation.isMountedRef.current as any) = true;
   }, []);
   return (
-    <NavigationContainer ref={navigation.navigationRef}>
-      <RootStack.Navigator>
-        <RootStack.Group screenOptions={{ headerShown: false }}>
-          <RootStack.Screen name='Main' component={Screens} />
-        </RootStack.Group>
+    <View style={{ flex: 1 }}>
+      <RecoilRoot>
+        <View style={{ flex: 1 }}>
+          <NavigationContainer ref={navigation.navigationRef}>
+            <RootStack.Navigator>
+              <RootStack.Group screenOptions={{ headerShown: false }}>
+                <RootStack.Screen name='Main' component={Screens} />
+              </RootStack.Group>
 
-        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-          <RootStack.Screen name='Book' component={Book} />
-        </RootStack.Group>
-      </RootStack.Navigator>
-    </NavigationContainer>
+              <RootStack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
+                <RootStack.Screen name='Book' component={Book} />
+              </RootStack.Group>
+            </RootStack.Navigator>
+          </NavigationContainer>
+        </View>
+      </RecoilRoot>
+    </View>
   );
 }

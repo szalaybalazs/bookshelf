@@ -10,8 +10,13 @@ export interface iBook {
   pages?: number;
   averageRating?: number;
 
+  addedAt?: Date;
   startedAt?: Date;
   finishedAt?: Date;
   progress?: number;
   rating?: number;
+}
+
+export interface iShelf {
+  books: iBook[];
 }
