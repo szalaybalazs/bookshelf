@@ -16,6 +16,8 @@
     "expo-linear-gradient": "~11.4.0",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
+    "node-html-markdown": "^1.2.0",
+    "node-html-parser": "^6.1.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.6",
@@ -24,7 +26,8 @@
     "react-native-screens": "^3.17.0",
     "react-native-web": "~0.18.7",
     "recoil": "^0.7.5",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "user-agents": "^1.0.1156"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -33,6 +36,7 @@
     "@types/recoil": "^0.0.9",
     "@types/styled-components": "^5.1.26",
     "@types/styled-components-react-native": "^5.1.3",
+    "@types/user-agents": "^1.0.2",
     "typescript": "~4.3.5"
   },
   "private": true

@@ -1,11 +1,12 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useRecoilCallback } from 'recoil';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styled } from '../core';
 import { iBook } from '../types';
 import { shelfAtom } from '../recoil/atoms/shelf';
+import { getBookFromGoodreadByUrl } from '../core/goodreads';
 interface iBookProps {
   route: { params: { book: iBook } };
 }
@@ -80,6 +81,7 @@ const Book: FC<iBookProps> = ({
     params: { book },
   },
 }) => {
+  const [state, setState] = useState();
   const _handleAdd = useRecoilCallback(
     ({ snapshot, set }) =>
       async () => {
@@ -91,6 +93,11 @@ const Book: FC<iBookProps> = ({
       },
     [book],
   );
+  useEffect(() => {
+    if (book.url) getBookFromGoodreadByUrl(book.url).then(setState);
+  }, [book.url]);
+
+  console.log(state);
   return (
     <Wrapper>
       <Scroll bounces={false}>
@@ -101,13 +108,13 @@ const Book: FC<iBookProps> = ({
             </LinearGradient>
           </CoverWrapper>
           <Container>
-            <Title adjustsFontSizeToFit numberOfLines={1}>
+            <Title adjustsFontSizeToFit numberOfLines={3}>
               {book.title}
             </Title>
             {book.subtitle && <Subtitle>{book.subtitle}</Subtitle>}
-            <Author>{book.authors}</Author>
+            <Author>{book.authors.join(', ')}</Author>
             {book.averageRating && <Rating>{book.averageRating} / 5</Rating>}
-            <Desciption>{book.description}</Desciption>
+            <Desciption>{state?.description || book.description}</Desciption>
           </Container>
         </SafeAreaView>
       </Scroll>

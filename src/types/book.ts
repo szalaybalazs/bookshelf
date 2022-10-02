@@ -1,5 +1,8 @@
 export interface iBook {
   id: string;
+  url?: string;
+
+  source?: string;
 
   cover?: string;
   colour?: string;
