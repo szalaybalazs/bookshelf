@@ -1,11 +1,12 @@
 import { FC, useMemo } from 'react';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useRecoilValue } from 'recoil';
-import { colours } from '../config';
-import { styled } from '../core';
+import { colours, fonts } from '../config';
+import { navigation, styled } from '../core';
 import { BOOK_DIMENSIONS } from '../core/constants';
 import { shelfAtom } from '../recoil/atoms/shelf';
 import { iBook } from '../types';
+import Container from './Container';
 
 type eType = 'FINISHED' | 'ACTIVE' | 'PLANNED' | 'EMPTY';
 interface iShelfBook {
@@ -36,11 +37,13 @@ const BookShelf: FC<iShelfProps> = () => {
     return books.map((book, index) => ({ ...book, index }));
   }, [shelf.books, shelf.goal]);
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', paddingHorizontal: 4 }}>
-      {books.map((book, index) => (
-        <Book key={`book-${index}`} {...book} />
-      ))}
-    </View>
+    <Container padding>
+      <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', paddingHorizontal: 4 }}>
+        {books.map((book, index) => (
+          <Book key={`book-${index}`} {...book} />
+        ))}
+      </View>
+    </Container>
   );
 };
 
@@ -93,10 +96,12 @@ const Book: FC<iBookProps> = ({ index, book, type }) => {
             top: '50%',
             left: 0,
             textAlign: 'center',
-            color: 'white',
             fontSize: 14,
             fontWeight: '500',
             transform: [{ translateY: -7 }],
+            fontFamily: fonts.code.semibold,
+            color: colours.dark.color,
+            opacity: 0.6,
           }}
         >
           #{index + 1}
@@ -120,6 +125,7 @@ const Book: FC<iBookProps> = ({ index, book, type }) => {
         <Text
           numberOfLines={2}
           adjustsFontSizeToFit
+          minimumFontScale={0.5}
           style={{
             width: height,
             overflow: 'hidden',
@@ -128,7 +134,9 @@ const Book: FC<iBookProps> = ({ index, book, type }) => {
             color: 'white',
             textAlign: 'center',
             padding: 1,
+            fontSize: 12,
             paddingHorizontal: 8,
+            fontFamily: fonts.primary.medium,
           }}
         >
           {book.title}
@@ -137,23 +145,29 @@ const Book: FC<iBookProps> = ({ index, book, type }) => {
     );
   }, [type, book?.title, index]);
 
+  const _handleDetails = () => {
+    if (book) navigation.navigate('Book', { book });
+  };
+
   return (
-    <BookWrapper
-      width={width}
-      height={height}
-      type={type}
-      colour={book?.colour}
-      // style={{
-      //   width,
-      //   height,
-      //   backgroundColor: book?.colour ?? '#aaa',
-      //   marginHorizontal: 0.5,
-      //   marginBottom: 24,
-      //   borderRadius: 2,
-      // }}
-    >
-      {label}
-    </BookWrapper>
+    <Pressable onPress={_handleDetails}>
+      <BookWrapper
+        width={width}
+        height={height}
+        type={type}
+        colour={book?.colour}
+        // style={{
+        //   width,
+        //   height,
+        //   backgroundColor: book?.colour ?? '#aaa',
+        //   marginHorizontal: 0.5,
+        //   marginBottom: 24,
+        //   borderRadius: 2,
+        // }}
+      >
+        {label}
+      </BookWrapper>
+    </Pressable>
   );
 };
 

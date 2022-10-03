@@ -8,6 +8,7 @@ import { colours } from '@/config';
 import Book from './pages/Book';
 import Search from './pages/Search';
 import Shelf from './pages/Shelf';
+import BookFinish from './pages/BookFinish';
 
 const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,6 +32,7 @@ const Navigation: FC<iNavigationProps> = () => {
 
         <RootStack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
           <RootStack.Screen name='Book' component={Book} />
+          <RootStack.Screen name='BookFinish' component={BookFinish} />
         </RootStack.Group>
       </RootStack.Navigator>
     </NavigationContainer>

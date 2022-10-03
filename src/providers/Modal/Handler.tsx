@@ -10,6 +10,10 @@ interface iHandlerProps {
   onPanEnded: (translation: number, velocity: number) => void;
 }
 
+const getTransform = (val: number) => {
+  if (val >= 0) return val;
+  return -Math.pow(Math.abs(val), 0.8);
+};
 interface iPanEvent {
   nativeEvent: { translationY: number; velocityY: number };
 }
@@ -20,11 +24,11 @@ const Handler: FC<iHandlerProps> = ({ timeout, onPan, onPanEnded }) => {
   }));
 
   const _handlePan = useCallback(({ nativeEvent: { translationY, velocityY } }: iPanEvent) => {
-    onPan(translationY, velocityY);
+    onPan(getTransform(translationY), getTransform(velocityY));
   }, []);
 
   const _handleEnded = ({ nativeEvent: { translationY, velocityY } }: iPanEvent) => {
-    onPanEnded(translationY, velocityY);
+    onPanEnded(getTransform(translationY), getTransform(velocityY));
   };
   return (
     <PanGestureHandler onGestureEvent={_handlePan} onEnded={_handleEnded as any}>

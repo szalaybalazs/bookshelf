@@ -1,10 +1,11 @@
-import { Input, Separator } from '@/components';
+import { Container, Header, Input, Separator } from '@/components';
 import Skeleton from '@/components/Skeleton';
 import { colours, fonts } from '@/config';
 import { useModal } from '@/hooks/useModal';
 import { ComingSoonModal } from '@/modals';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState } from 'recoil';
 import { navigation, queryBooks } from '../core';
 import { searchAtom } from '../recoil/atoms/search';
@@ -46,30 +47,47 @@ const Search: FC<iSearchProps> = () => {
   const _handleManual = () => modal.presentModal(<ComingSoonModal />, { timeout: 3000 });
 
   return (
-    <Skeleton
-      poppable
-      safearea={false}
-      title='Search'
-      action={{
-        icon: 'scan',
-        onPress: _handleManual,
-      }}
-      type='SLIM'
-    >
-      <Separator />
-      <Input value={query} placeholder='Search...' onChange={_handleQuery} />
+    <>
+      <Header
+        poppable
+        title='Search'
+        action={{
+          icon: 'scan',
+          onPress: _handleManual,
+        }}
+        type='SLIM'
+      />
+      <View style={{ paddingHorizontal: 24 }}>
+        <Separator />
+        <Input value={query} placeholder='Search...' onChange={_handleQuery} />
+      </View>
       {isLoading ? (
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <ActivityIndicator animating color={colours.dark.color} />
         </View>
       ) : (
-        <ScrollView>
-          <Separator />
-          {books.map(_handleRender)}
+        <ScrollView style={{ flex: 1 }}>
+          <SafeAreaView edges={['bottom']} style={{ paddingHorizontal: 24 }}>
+            <Separator />
+            {books.map(_handleRender)}
+          </SafeAreaView>
         </ScrollView>
       )}
-      {/* <FlatList data={books} renderItem={_handleRender} /> */}
-    </Skeleton>
+      {/* <View>
+        {isLoading ? (
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator animating color={colours.dark.color} />
+          </View>
+        ) : (
+          <ScrollView>
+            <SafeAreaView edges={['bottom']}>
+              <Separator />
+              {books.map(_handleRender)}
+            </SafeAreaView>
+          </ScrollView>
+        )}
+      </View> */}
+    </>
   );
 };
 

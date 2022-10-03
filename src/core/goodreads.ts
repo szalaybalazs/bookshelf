@@ -34,11 +34,13 @@ export const getBooksFromGoodreads = async (query: string): Promise<iBook[]> => 
 export const getBookFromGoodreadByUrl = async (url: string, lvl: number = 0): Promise<Partial<iBook>> => {
   if (lvl > 5) return {};
   try {
-    const res = await fetch(`https://www.goodreads.com${url}`, { headers: { 'Accept-Language': 'en-US' }, credentials: 'omit' });
+    const res = await fetch(`https://www.goodreads.com${url}?from_search=true&from_srp=true`, {
+      headers: { 'Accept-Language': 'en-US' },
+      credentials: 'omit',
+    });
     const html = await res.text();
     const dom = parse(html);
 
-    // console.log(dom.querySelector(`[href="${url}"]`)?.innerText, 'text');
     const main = dom.querySelector('main')?.innerHTML;
     if (!main) {
       console.log('Retriying in 2.5s');

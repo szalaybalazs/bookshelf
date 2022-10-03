@@ -1,4 +1,6 @@
 import { Action, Button, Container, Header, Row, Separator } from '@/components';
+import BookModalHeader from '@/components/BookModalHeader';
+import BookModalTitle from '@/components/BookModalTitle';
 import Skeleton from '@/components/Skeleton';
 import { colours, fonts } from '@/config';
 import { useBook } from '@/hooks/useBook';
@@ -78,24 +80,9 @@ const Book: FC<iBookProps> = ({
     <Skeleton padding={false} safearea={false}>
       <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
         <Scroll>
-          <CoverWrapper>
-            <LinearGradient style={{ flex: 1 }} colors={[book.colour || colours.dark.background, colours.dark.background]}>
-              <Row padding={24}>
-                <Action large icon='chevron-down' onPress={navigation.pop} />
-                <Action large icon='share' onPress={() => alert('Sharing coming soon')} />
-              </Row>
-
-              <Separator scale={4} />
-              <Cover source={{ uri: book.cover }} resizeMode='contain' />
-              <Separator scale={8} />
-            </LinearGradient>
-          </CoverWrapper>
+          <BookModalHeader share {...book} />
           <Container padding>
-            <Title adjustsFontSizeToFit numberOfLines={2}>
-              {book.title}
-            </Title>
-            <Separator scale={2} />
-            <Author>{book.authors.join(', ')}</Author>
+            <BookModalTitle {...book} />
             <Separator scale={6} />
             {!book.description && loading ? (
               <ActivityIndicator animating color={colours.dark.color} />

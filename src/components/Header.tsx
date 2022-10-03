@@ -40,7 +40,7 @@ const Header: FC<iHeaderProps> = ({ title, subtitle, poppable, type, action, mod
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 24,
-    paddingTop: 24,
+    // paddingTop: 24,
   },
   row: {
     flexDirection: 'row',

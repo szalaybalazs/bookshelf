@@ -1,4 +1,4 @@
-import { Banner, Separator } from '@/components';
+import { Separator } from '@/components';
 import Book from '@/components/Book';
 import { useModal } from '@/hooks/useModal';
 import { shelfAtom } from '@/recoil/atoms/shelf';
@@ -10,19 +10,25 @@ import { useRecoilCallback, useRecoilValue } from 'recoil';
 interface iBookSelectorProps {}
 const BookSelector: FC<iBookSelectorProps> = ({}) => {
   const modal = useModal();
-  const books = useRecoilValue(booksSelector);
+  const { unplanned: books } = useRecoilValue(booksSelector);
 
   const _handleSelect = useRecoilCallback(
     ({ snapshot, set }) =>
       async (id: string) => {
         try {
           const shelf = await snapshot.getPromise(shelfAtom);
-          const bookIndex = books.findIndex((b) => b.id === id);
-          if (bookIndex < 0) throw Error();
+
+          const bookIndex = shelf.books.findIndex((b) => b.id === id);
+          if (bookIndex < 0) throw Error('Book not found');
+
           const _books = [...shelf.books];
           _books[bookIndex] = { ..._books[bookIndex], startedAt: new Date() };
+
+          console.log(_books);
+
           set(shelfAtom, { ...shelf, books: _books });
         } catch (error) {
+          alert(error);
         } finally {
           modal.dismissModal();
         }
