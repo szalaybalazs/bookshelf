@@ -1,10 +1,9 @@
 import { colours } from '@/config';
-import { scanCode } from '@/core';
+import navigation, { navigate } from '@/core/navigation';
 import React, { FC, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Separator from './Separator';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Action from './Action';
-import navigation from '@/core/navigation';
 
 interface iHomeHeaderProps {
   avatar?: string;
@@ -12,26 +11,31 @@ interface iHomeHeaderProps {
 }
 
 const HomeHeader: FC<iHomeHeaderProps> = () => {
-  const _handleNotifications = () => alert('notifications');
   const _handleProfile = useCallback(() => navigation.navigate('Profile'), []);
-  const _handleScan = () => scanCode();
+  const _handleSearch = () => navigate('Search');
   return (
-    <>
-      <Separator scale={2} />
+    <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <View>
           <Action padding={12} color={colours.dark.color} icon='user' onPress={_handleProfile} />
         </View>
-        <View style={styles.actions}>
-          <Action offset padding={12} icon='scan' onPress={_handleScan} />
-          <Action padding={12} background={colours.dark.foreground} icon='bell' onPress={_handleNotifications} />
+        <View>
+          <Action padding={12} color={colours.dark.color} icon='plus' onPress={_handleSearch} />
         </View>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    zIndex: 2,
+    top: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
+  },
   wrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',

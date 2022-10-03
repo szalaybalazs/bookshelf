@@ -20,7 +20,7 @@ import {
 
 export default function User(props) {
   return (
-    <Svg height='24px' width='24px' version='1.1' viewBox='0 0 24 24'>
+    <Svg height={props.height ?? 24} width={props.width ?? 24} version='1.1' viewBox='0 0 24 24'>
       <G id='icon/user' fill='none' fillRule='evenodd' stroke='none' strokeWidth='1'>
         <Path
           id='primary'

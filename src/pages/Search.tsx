@@ -47,10 +47,11 @@ const Search: FC<iSearchProps> = () => {
 
   return (
     <Skeleton
+      poppable
       safearea={false}
       title='Search'
       action={{
-        icon: 'plus',
+        icon: 'scan',
         onPress: _handleManual,
       }}
       type='SLIM'

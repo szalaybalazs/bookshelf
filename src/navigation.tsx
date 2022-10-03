@@ -12,15 +12,6 @@ import Shelf from './pages/Shelf';
 const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const Screens: FC = () => {
-  return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen name='Shelf' component={Shelf} />
-      <Tab.Screen name='Search' component={Search} />
-    </Tab.Navigator>
-  );
-};
-
 interface iNavigationProps {}
 
 const Navigation: FC<iNavigationProps> = () => {
@@ -34,7 +25,8 @@ const Navigation: FC<iNavigationProps> = () => {
     >
       <RootStack.Navigator>
         <RootStack.Group screenOptions={{ headerShown: false }}>
-          <RootStack.Screen name='Main' component={Screens} />
+          <RootStack.Screen name='Shelf' component={Shelf} />
+          <RootStack.Screen name='Search' component={Search} />
         </RootStack.Group>
 
         <RootStack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
