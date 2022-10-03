@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/share</title>
+    <g id="icon/share" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="share" transform="translate(4.000000, 2.000000)" stroke="#000000" stroke-width="2">
+            <path d="M0,10 L0,18 C0,19.1045695 0.8954305,20 2,20 L14,20 C15.1045695,20 16,19.1045695 16,18 L16,10" id="Path"></path>
+            <polyline id="Path" points="12 4 8 0 4 4"></polyline>
+            <line x1="8" y1="0" x2="8" y2="13" id="Path"></line>
+        </g>
+    </g>
+</svg>

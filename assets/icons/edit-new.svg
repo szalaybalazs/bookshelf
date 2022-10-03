@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/edit-new</title>
+    <g id="icon/edit-new" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="edit" transform="translate(2.000000, 2.000000)" stroke="#000000" stroke-width="2">
+            <path d="M9,2.12132031 L2,2.12132031 C0.8954305,2.12132031 0,3.01675081 0,4.12132031 L0,18.1213203 C0,19.2258898 0.8954305,20.1213203 2,20.1213203 L16,20.1213203 C17.1045695,20.1213203 18,19.2258898 18,18.1213203 L18,11.1213203" id="Path"></path>
+            <path d="M16.5,0.621320312 C17.3284271,-0.207106783 18.6715729,-0.207106769 19.5,0.621320344 C20.3284271,1.44974746 20.3284271,2.79289318 19.5,3.62132031 L10,13.1213203 L6,14.1213203 L7,10.1213203 L16.5,0.621320312 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

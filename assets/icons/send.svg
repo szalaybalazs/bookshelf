@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/send</title>
+    <g id="icon/send" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Group" transform="translate(2.000000, 2.000000)" stroke="#000000" stroke-width="2">
+            <line x1="20" y1="0" x2="9" y2="11" id="Path"></line>
+            <polygon id="Path" points="20 0 13 20 9 11 0 7"></polygon>
+        </g>
+    </g>
+</svg>

@@ -63,7 +63,6 @@ export const toggleDrawer = () => {
     navigationRef.current.dispatch(DrawerActions.toggleDrawer());
   } else setTimeout(() => toggleDrawer(), 100);
 };
-
 export const navigation = {
   isMountedRef,
   navigationRef,
@@ -76,3 +75,5 @@ export const navigation = {
   toggleDrawer,
   jump,
 };
+
+export default navigation;

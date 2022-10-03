@@ -1,86 +1,104 @@
+import { Container, Header, Separator } from '@/components';
+import Skeleton from '@/components/Skeleton';
 import { FC, useMemo } from 'react';
 import { SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { useRecoilValue } from 'recoil';
+import { colours } from '../config';
+import { styled } from '../core';
+import { BOOK_DIMENSIONS } from '../core/constants';
 import { shelfAtom } from '../recoil/atoms/shelf';
 import { iBook } from '../types';
-import { useRecoilValue, useRecoilState } from 'recoil';
+
+type eType = 'FINISHED' | 'ACTIVE' | 'PLANNED' | 'EMPTY';
+interface iShelfBook {
+  book?: iBook;
+  index?: number;
+  type: eType;
+}
 
 interface iShelfProps {}
 
 const Shelf: FC<iShelfProps> = () => {
   const shelf = useRecoilValue(shelfAtom);
 
-  const books = useMemo(() => {
-    return [...new Array(50)].map((_, index) => {
-      return shelf.books[index];
-    });
-  }, [shelf.books]);
+  const books: iShelfBook[] = useMemo(() => {
+    const finishedBooks = shelf.books.filter((b) => b.startedAt && b.finishedAt);
+    const currentBooks = shelf.books.filter((b) => b.startedAt && !b.finishedAt);
+    const unplannedBooks = shelf.books.filter((b) => !b.startedAt);
+
+    const rest = Math.max(0, shelf.goal - shelf.books.length);
+
+    const books: iShelfBook[] = [
+      ...finishedBooks.map((book): iShelfBook => ({ book, type: 'FINISHED' })),
+      ...currentBooks.map((book): iShelfBook => ({ book, type: 'ACTIVE' })),
+      ...unplannedBooks.map((book): iShelfBook => ({ book, type: 'PLANNED' })),
+      ...[...new Array(rest)].map((): iShelfBook => ({ type: 'EMPTY' })),
+    ];
+
+    return books.map((book, index) => ({ ...book, index }));
+  }, [shelf.books, shelf.goal]);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <Skeleton safearea={false} type='SLIM' title='Shelf' subtitle='Manage your books and set your yearly goal' action={{ icon: 'user' }}>
+      <Separator />
       <ScrollView>
         <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', paddingHorizontal: 4 }}>
-          {books.map((book: iBook | undefined, index) => (
-            <Book index={index} key={`book-${index}`} book={book} />
+          {books.map((book, index) => (
+            <Book key={`book-${index}`} {...book} />
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </Skeleton>
   );
 };
 
-const dimensions: { width: number; height: number }[] = [
-  {
-    width: 36,
-    height: 120,
-  },
-  {
-    width: 32,
-    height: 110,
-  },
-  {
-    width: 24,
-    height: 116,
-  },
-  {
-    width: 32,
-    height: 80,
-  },
-  {
-    width: 28,
-    height: 96,
-  },
-  {
-    width: 32,
-    height: 90,
-  },
-  {
-    width: 24,
-    height: 118,
-  },
-  {
-    width: 32,
-    height: 100,
-  },
-];
-const heights = [120, 100, 125, 96, 180];
+const getBackground = (type: eType, colour?: string) => {
+  if (type === 'FINISHED') return colour;
+  if (type === 'ACTIVE') return colour;
+  if (type === 'PLANNED') return colours.light.foreground;
+  return colours.light.background;
+};
+const getBorder = (type: eType, colour?: string) => {
+  if (type === 'FINISHED') return colour;
+  if (type === 'ACTIVE') return colour;
+  if (type === 'PLANNED') return colours.light.foreground;
+  return colours.light.foreground;
+};
 
-interface iBookProps {
-  index: number;
-  book: iBook | undefined;
-}
-const Book: FC<iBookProps> = ({ index, book }) => {
+const BookWrapper = styled.View<{ width: number; height: number; type: eType; colour?: string }>`
+  width: ${(p) => p.width}px;
+  height: ${(p) => p.height}px;
+  background-color: ${(p) => getBackground(p.type, p.colour)};
+  border: 1px solid ${(p) => getBorder(p.type, p.colour)};
+  /* backgroundColor: book?.colour ?? '#aaa', */
+  /* marginHorizontal: 0.5, */
+  /* marginBottom: 24, */
+  margin: 0 0.5px 24px 0.5px;
+  border-radius: 2px;
+`;
+
+interface iBookProps extends iShelfBook {}
+const Book: FC<iBookProps> = ({ index, book, type }) => {
   const { width, height } = useMemo(() => {
-    return dimensions[index % dimensions.length];
+    const { width, height } = BOOK_DIMENSIONS[(index || 0) % BOOK_DIMENSIONS.length];
+
+    return {
+      width: width * 1.3,
+      height: height * 1.23,
+    };
   }, [index]);
   return (
-    <View
-      style={{
-        width,
-        height,
-        backgroundColor: book?.colour ?? '#aaa',
-        marginHorizontal: 0.5,
-        marginBottom: 24,
-        borderRadius: 2,
-      }}
+    <BookWrapper
+      width={width}
+      height={height}
+      type={type}
+      // style={{
+      //   width,
+      //   height,
+      //   backgroundColor: book?.colour ?? '#aaa',
+      //   marginHorizontal: 0.5,
+      //   marginBottom: 24,
+      //   borderRadius: 2,
+      // }}
     >
       {!book?.title ? (
         <Text
@@ -137,7 +155,7 @@ const Book: FC<iBookProps> = ({ index, book }) => {
           </Text>
         </View>
       )}
-    </View>
+    </BookWrapper>
   );
 };
 

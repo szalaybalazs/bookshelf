@@ -1,23 +1,24 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { atom, selector, AtomEffect } from 'recoil';
-import { iBook, iShelf } from '../../types';
+import { atom, atomFamily, selectorFamily } from 'recoil';
+import { iShelf } from '../../types';
+import { storageEffect } from '../effects';
 
-const key = '@shelf';
-
-const storageEffect: AtomEffect<iShelf> = ({ setSelf, onSet }) => {
-  onSet((shelf, _, isReset) => {
-    if (isReset) AsyncStorage.removeItem(key);
-    else AsyncStorage.setItem(key, JSON.stringify(shelf));
-  });
-
-  AsyncStorage.getItem(key).then((value) => {
-    const shelf = JSON.parse(value || '{"books": []}');
-    setSelf(shelf);
-  });
-};
+const defaultShelf: iShelf = { books: [], goal: 25, start: new Date() };
 
 export const shelfAtom = atom({
   key: 'shelf',
-  default: { books: [] },
-  effects: [storageEffect],
+  default: defaultShelf,
+  effects: [storageEffect('@shelf.2', defaultShelf)],
+});
+
+export const bookAtom = atomFamily({
+  key: 'book',
+  default: selectorFamily({
+    key: 'book/Default',
+    get:
+      (param) =>
+      ({ get }) => {
+        const shelf = get(shelfAtom);
+        return shelf.books.find((book) => book.id === param);
+      },
+  }),
 });

@@ -1,7 +1,5 @@
 import { iBook } from '../types';
 import { getColor } from './colors';
-import UserAgent from 'user-agents';
-import parse from 'node-html-parser';
 import { getBooksFromGoodreads } from './goodreads';
 
 const cache: { [key: string]: iBook[] } = {};
@@ -99,7 +97,6 @@ export const queryBooks = async (query: string): Promise<iBook[]> => {
     ]);
 
     const books = res.flat().filter((a) => !!a.cover);
-    console.log(books.map((a) => a.source));
     cache[_query] = books;
     return books;
   } catch (error) {

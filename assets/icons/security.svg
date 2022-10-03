@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/security</title>
+    <g id="icon/security" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M4,4 L12,2 L20,4 L20,13.0557281 C20,16.0859046 18.287981,18.8560095 15.5777088,20.2111456 L12,22 L12,22 L8.42229124,20.2111456 C5.71201901,18.8560095 4,16.0859046 4,13.0557281 L4,4 L4,4 Z" id="primary" fill="#0D2B3E" opacity="0.400000006"></path>
+        <path d="M6,12 L6,5.56155281 L12,4.06155281 L12,12 L6,12 Z M12,19.763932 L12,12 L18,12 L18,13.0557281 C18,15.3283604 16.7159857,17.4059392 14.6832816,18.4222912 L12,19.763932 L12,19.763932 Z" id="secondary" fill="#0D2B3E"></path>
+    </g>
+</svg>

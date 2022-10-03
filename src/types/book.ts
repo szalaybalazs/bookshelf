@@ -22,4 +22,6 @@ export interface iBook {
 
 export interface iShelf {
   books: iBook[];
+  start: Date;
+  goal: number;
 }
