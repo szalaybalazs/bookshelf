@@ -61,7 +61,7 @@ const Shelf: FC<iShelfProps> = () => {
         onScroll={scrollHandler}
         scrollEventThrottle={1}
         snapToEnd={false}
-        snapToOffsets={[0, initialHeight - insets.top - 42]}
+        snapToOffsets={[0, initialHeight - insets.top - 42 - 8]}
       >
         <View style={{ height: initialHeight }}>
           <Animated.View style={animatedStyles}>

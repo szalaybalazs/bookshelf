@@ -1,20 +1,10 @@
 import { colours, fonts } from '@/config';
 import navigation, { navigate } from '@/core/navigation';
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { FC, useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated, { Extrapolate, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, {
-  useAnimatedStyle,
-  withTiming,
-  Easing,
-  interpolateColor,
-  useDerivedValue,
-  SharedValue,
-  interpolate,
-  Extrapolate,
-} from 'react-native-reanimated';
 import Action from './Action';
-import tinycolor from 'tinycolor2';
 
 interface iHomeHeaderProps {
   avatar?: string;
@@ -72,6 +62,7 @@ const HomeHeader: FC<iHomeHeaderProps> = ({ title, background, collapsedTitle, s
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
+    paddingBottom: 8,
   },
   outerWrapper: {
     position: 'absolute',

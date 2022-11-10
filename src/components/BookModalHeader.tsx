@@ -6,7 +6,7 @@ import { navigation, styled } from '../core';
 import { iBook } from '../types';
 
 const CoverWrapper = styled.View`
-  height: 360;
+  height: 360px;
 `;
 const Cover = styled.Image`
   height: 220px;
